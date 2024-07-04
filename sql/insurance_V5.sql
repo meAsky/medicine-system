@@ -20,7 +20,7 @@ DROP DATABASE IF EXISTS `insurance`;
 CREATE DATABASE IF NOT EXISTS `insurance` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_croatian_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `insurance`;
 
--- 导出  表 insurance.a_department 结构
+-- 导出  表 insurance.a_department 部门表 结构
 DROP TABLE IF EXISTS `a_department`;
 CREATE TABLE IF NOT EXISTS `a_department` (
   `id` bigint unsigned NOT NULL,
@@ -29,11 +29,11 @@ CREATE TABLE IF NOT EXISTS `a_department` (
   `del_flag` int DEFAULT NULL,
   `update_by` varchar(255) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `parent_id` bigint unsigned DEFAULT NULL,
+  `parent_id` bigint unsigned DEFAULT NULL  COMMENT "父级ID，NULL是没有父部门，即一级部门",
   `sort_order` decimal(10,2) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `is_parent` bit(1) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL  COMMENT "部门名称",
+  `is_parent` bit(1) DEFAULT NULL  COMMENT "是否父级，即是否还有子部门",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -54,7 +54,7 @@ INSERT INTO `a_department` (`id`, `create_by`, `create_time`, `del_flag`, `updat
 	(1464487807572643841, 'admin', '2022-03-20 09:46:20', 0, 'admin', '2022-03-20 09:46:20', 1464487379074158593, 2.00, 0, '产品应用部', b'0'),
 	(1527834362656198656, 'admin', '2022-05-21 10:11:13', 0, NULL, NULL, 0, 6.00, 0, '客服部', b'0');
 
--- 导出  表 insurance.a_department_header 结构
+-- 导出  表 insurance.a_department_header 部门领导 结构
 DROP TABLE IF EXISTS `a_department_header`;
 CREATE TABLE IF NOT EXISTS `a_department_header` (
   `id` bigint unsigned NOT NULL,
@@ -63,16 +63,16 @@ CREATE TABLE IF NOT EXISTS `a_department_header` (
   `del_flag` tinyint(1) DEFAULT NULL,
   `update_by` varchar(255) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `department_id` bigint unsigned DEFAULT NULL,
+  `department_id` bigint unsigned DEFAULT NULL COMMENT "关联的部门ID",
   `type` tinyint(1) DEFAULT NULL,
-  `user_id` bigint unsigned DEFAULT NULL,
+  `user_id` bigint unsigned DEFAULT NULL  COMMENT "关联的用户ID",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- 正在导出表  insurance.a_department_header 的数据：~0 rows (大约)
 DELETE FROM `a_department_header`;
 
--- 导出  表 insurance.a_dict 结构
+-- 导出  表 insurance.a_dict 数据字典 结构
 DROP TABLE IF EXISTS `a_dict`;
 CREATE TABLE IF NOT EXISTS `a_dict` (
   `id` bigint unsigned NOT NULL,
@@ -81,14 +81,14 @@ CREATE TABLE IF NOT EXISTS `a_dict` (
   `del_flag` tinyint(1) DEFAULT NULL,
   `update_by` varchar(255) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL ,
   `title` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   `sort_order` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- 正在导出表  insurance.a_dict 的数据：~4 rows (大约)
+-- 正在导出表  insurance.a_dict 的数据：~4 rows (大约) 
 DELETE FROM `a_dict`;
 INSERT INTO `a_dict` (`id`, `create_by`, `create_time`, `del_flag`, `update_by`, `update_time`, `description`, `title`, `type`, `sort_order`) VALUES
 	(75135930788220928, 'admin', '2022-03-20 09:46:20', 0, 'admin', '2022-03-20 09:46:20', '', '性别', 'sex', 0.00),
@@ -143,7 +143,7 @@ INSERT INTO `a_dict_data` (`id`, `create_by`, `create_time`, `del_flag`, `update
 	(1536613425902391296, 'admin', '2022-06-14 15:36:04', 0, NULL, NULL, '', 1536613395229446144, 1.00, 0, '在职', '在职'),
 	(1536613447544999936, 'admin', '2022-06-14 15:36:09', 0, NULL, NULL, '', 1536613395229446144, 2.00, 0, '离职', '离职');
 
--- 导出  表 insurance.a_examine 结构
+-- 导出  表 insurance.a_examine 保险审核表 结构
 DROP TABLE IF EXISTS `a_examine`;
 CREATE TABLE IF NOT EXISTS `a_examine` (
   `id` varchar(255) COLLATE utf8_croatian_ci NOT NULL,
@@ -152,13 +152,13 @@ CREATE TABLE IF NOT EXISTS `a_examine` (
   `del_flag` int NOT NULL,
   `update_by` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL,
   `update_time` datetime(6) DEFAULT NULL,
-  `insurance_id` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL,
-  `insurance_name` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL,
-  `message` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL,
-  `money` decimal(19,2) DEFAULT NULL,
+  `insurance_id` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL  COMMENT "保险ID",
+  `insurance_name` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL COMMENT "保险名称",
+  `message` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL COMMENT "审核结果消息",
+  `money` decimal(19,2) DEFAULT NULL COMMENT "保费",
   `status` int DEFAULT NULL,
   `user_id` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL,
-  `user_name` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL,
+  `user_name` varchar(255) COLLATE utf8_croatian_ci DEFAULT NULL  COMMENT "审核人姓名",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_croatian_ci;
 
